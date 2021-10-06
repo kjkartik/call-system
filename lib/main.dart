@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:connectycube_flutter_call_kit/connectycube_flutter_call_kit.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   @override
@@ -14,11 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  TextEditingController _numberCtrl = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _numberCtrl.text = "085921191121";
   }
 
   @override
@@ -28,9 +27,22 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+        body: Column(children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _numberCtrl,
+              decoration: const InputDecoration(labelText: "Phone Number"),
+              keyboardType: TextInputType.number,
+            ),
+          ),
+          ElevatedButton(
+            child: const Text("Test Call"),
+            onPressed: () async {
+              FlutterPhoneDirectCaller.callNumber(_numberCtrl.text);
+            },
+          )
+        ]),
       ),
     );
   }
